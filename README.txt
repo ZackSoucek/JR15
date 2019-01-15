@@ -1,2 +1,2 @@
-This is a readme for whatever this is going to be
+JR15 School Shooter Project!
 
