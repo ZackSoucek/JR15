@@ -9,3 +9,9 @@
 concepte:
     western?
     medieval?
+
+weapons:
+    multiple types, primary and secondary
+    many classes can have use each weapon
+    some classes exclusive weapon
+        each main hand or off hand
