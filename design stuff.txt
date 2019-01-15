@@ -15,3 +15,8 @@ weapons:
     many classes can have use each weapon
     some classes exclusive weapon
         each main hand or off hand
+
+
+combat panel based
+timeline based on speed
+slow affects, stun effects, 
