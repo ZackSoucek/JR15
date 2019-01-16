@@ -1,6 +1,6 @@
 class Weapon:
 
-    def __init__(self, damageFunc,weaponType):
+    def __init__(self, damageFunc,weaponType, weaponName,weaponDescription, weaponIcon):
         self.damageFunc = damageFunc
         self.type = weaponType
 
@@ -18,3 +18,4 @@ from enum import Enum
 class WeaponType(Enum):
     pistol = 1
     club = 2
+    knife = 3
