@@ -15,7 +15,7 @@ class Creature:
         self.position = position
         self.speed = speed
 
-    def damage(self, modifier, amount=0, percent=0): # can also be used for healing w/ - damage
+    def takeDamage(self, modifier, amount=0, percent=0): # can also be used for healing w/ - damage
         self.health -= amount * (1 if modifier not in self.damageModifiers else self.damageModifiers[modifier])
         self.health -= (self.health * percent) * (1 if modifier not in self.damageModifiers else self.damageModifiers[modifier])
 

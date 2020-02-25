@@ -9,7 +9,7 @@ class Attack:
 
     def runAttack(self, env):
         for creature in self.targetFunc(env):
-            creature.damage(self.modifier, self.flatDamage, self.percentDamage)
+            creature.takeDamage(self.modifier, self.flatDamage, self.percentDamage)
 
 
 def targetAll(env):

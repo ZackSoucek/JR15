@@ -27,9 +27,9 @@ class ButtonLayout:
 
 class Battle:
 
-    def __init__(self, enemies, heros, background, characteristics):
+    def __init__(self, enemies, heroes, background, characteristics):
         self.enemies = enemies
-        self.heros = heros
+        self.heros = heroes
         self.background = background
         self.characteristics = characteristics
 
