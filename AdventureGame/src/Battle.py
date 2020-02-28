@@ -1,5 +1,6 @@
 from src.UI import *
 from src.InterruptQueue import *
+from src.Creatures.Environment import *
 import pygame
 
 
@@ -28,10 +29,8 @@ class ButtonLayout:
 class Battle:
 
     def __init__(self, enemies, heroes, background, characteristics):
-        self.enemies = enemies
-        self.heros = heroes
+        self.environment = Environment(enemies,heroes,characteristics)
         self.background = background
-        self.characteristics = characteristics
 
         self.basicButtonInterrupt = InterruptQueue()  # x, y, width, height, image, onClick, interruptQueue
         self.basicButtonLayout = ButtonLayout(

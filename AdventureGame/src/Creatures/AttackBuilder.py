@@ -11,16 +11,21 @@ class Attack:
         for creature in self.targetFunc(env):
             creature.takeDamage(self.modifier, self.flatDamage, self.percentDamage)
 
+def targetEnemies(func):
+    return lambda env: func(env.enemies)
 
-def targetAll(env):
+def targetHeros(func):
+    return lambda env: func(env.heroes)
+
+def targetAll(group):
     pass
 
 
-def targetRandom(env):
+def targetRandom(group):
     pass
 
 
-def targetMinFeature(env, feature):
-    def targetMinX(env):
+def targetMinFeature(group, feature):
+    def targetMinX(group):
         pass
     return targetMinX
