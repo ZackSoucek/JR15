@@ -3,6 +3,9 @@ from src.InterruptQueue import *
 from src.UI import *
 from src.Battle import *
 
+import ctypes
+ctypes.windll.user32.SetProcessDPIAware()  # <== found it on stack overflow, it works
+
 pygame.init()
 
 size = width, height = 1920, 1080
