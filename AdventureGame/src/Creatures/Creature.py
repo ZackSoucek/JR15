@@ -34,3 +34,12 @@ class Creature:
     def attack(self, env):
         return self.getAttack(env)
 
+    def getFeature(self, feature):
+        if feature == "health":
+            return self.currHealth
+        elif feature == "maxhealth":
+            return self.maxHealth
+        elif feature == "speed":
+            return self.speed
+        return "notImplemented"
+
