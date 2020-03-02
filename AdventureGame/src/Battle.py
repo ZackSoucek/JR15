@@ -1,6 +1,7 @@
 from src.UI import *
 from src.InterruptQueue import *
 from src.Creatures.Environment import *
+from src.Creatures.Creature import *
 import pygame
 
 
@@ -20,16 +21,20 @@ class ButtonLayout:
         if self.active:
             self.interruptQueue.runInterrupts()
 
-    def drawButtons(self, screen):
+    def drawButtons(self, layers):
         if self.active:
             for button in self.buttons:
-                button.drawButton(screen)
+                button.drawButton(layers)
 
 
 class Battle:
 
+    frame = None
+
     def __init__(self, enemies, heroes, background, characteristics):
         self.environment = Environment(enemies,heroes,characteristics)
+        self.setEnemyPositions()
+
         self.background = background
 
         self.basicButtonInterrupt = InterruptQueue()  # x, y, width, height, image, onClick, interruptQueue
@@ -75,11 +80,26 @@ class Battle:
         self.basicButtonLayout.activate()
 
 
-    def drawBattle(self,screen):
-        screen.blit(self.background, (0, 0))
-        self.basicButtonLayout.drawButtons(screen)
+    def drawBattle(self,layers):
+        layers[0].blit(self.background, (0, 0))
+        self.basicButtonLayout.drawButtons(layers)
+        for enemy in self.environment.enemies:
+            enemy.draw(layers)
 
     def getBattleInput(self):
         self.basicButtonLayout.checkButtons()
+
+    def setEnemyPositions(self):
+        totSize = sum(enemy.size for enemy in self.environment.enemies)
+        distBetween = 50
+        sizeToSpace = Creature.sizeHeight
+        space = 1580 - (len(self.environment.enemies)-1) * distBetween - totSize * sizeToSpace
+        x = 160 + space / 2
+        y = 560
+        for enemy in self.environment.enemies:
+            enemy.changePosition(x, y - enemy.size * sizeToSpace)
+            x += distBetween + enemy.size * sizeToSpace
+
+
 
 

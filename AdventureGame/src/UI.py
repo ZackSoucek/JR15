@@ -21,7 +21,7 @@ class Button:
     def removeButton(self,interruptQueue):
         interruptQueue.removeInterrupt(self.checkClicked, "mouse_pos", "mouse_clicked")
 
-    def drawButton(self, screen):
-        screen.blit(self.image,self.rect)
+    def drawButton(self, layers):
+        layers[2].blit(self.image,self.rect)
 
 
