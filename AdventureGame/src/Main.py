@@ -3,6 +3,7 @@ from src.InterruptQueue import *
 from src.UI import *
 from src.Battle import *
 from src.Creatures.Creature import *
+from src.Creatures.Hero import *
 
 import ctypes
 ctypes.windll.user32.SetProcessDPIAware()  # <== found it on stack overflow, it works
@@ -10,7 +11,7 @@ ctypes.windll.user32.SetProcessDPIAware()  # <== found it on stack overflow, it 
 pygame.init()
 
 size = width, height = 1920, 1080
-empty = pygame.Color(0,0,0,0)
+empty = pygame.Color(0, 0, 0, 0)
 
 screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
 
@@ -20,7 +21,7 @@ characters = pygame.surface.Surface((width, height),pygame.SRCALPHA)
 attacks = pygame.surface.Surface((width, height),pygame.SRCALPHA)
 layers = [backdrop, characters, ui, attacks]
 
-background = pygame.transform.scale(pygame.image.load("../art/UI example.png"), size)
+background = pygame.transform.scale(pygame.image.load("../art/hawaii.jpg"), size)
 enemyImage = pygame.transform.scale(pygame.image.load(r"..\art\Miner\Full Body Sprite\Miner Sprite 16x16.png"), (16,16))
 
 enemies = [
@@ -29,7 +30,14 @@ enemies = [
     Creature(1, 100, 50, dict(), enemyImage, None)
 ]
 
-battle = Battle(enemies, None, background, None)
+heroes = [
+    Hero(100, 50, dict(), enemyImage),
+    Hero(100, 50, dict(), enemyImage),
+    Hero(100, 50, dict(), enemyImage),
+    Hero(100, 50, dict(), enemyImage)
+]
+
+battle = Battle(enemies, heroes, background, None)
 
 while 1:
     for event in pygame.event.get():

@@ -29,11 +29,12 @@ class ButtonLayout:
 
 class Battle:
 
-    frame = None
+    frame = pygame.image.load("../art/Frame.png")
 
     def __init__(self, enemies, heroes, background, characteristics):
         self.environment = Environment(enemies,heroes,characteristics)
         self.setEnemyPositions()
+        self.setHeroPositions()
 
         self.background = background
 
@@ -41,37 +42,37 @@ class Battle:
         self.basicButtonLayout = ButtonLayout(
             self.basicButtonInterrupt,
             Button(
-                1470, 720, 200, 100,
+                1470, 721, 205, 106,
                 pygame.image.load("../art/buttons/BasicAttack.png"),
                 lambda: print("Basic Attack"),
                 self.basicButtonInterrupt
             ),
             Button(
-                1680, 720, 200, 100,
+                1675, 721, 205, 106,
                 pygame.image.load("../art/buttons/UniqueAttack.png"),
                 lambda: print("Unique Attack"),
                 self.basicButtonInterrupt
             ),
             Button(
-                1470, 830, 200, 100,
+                1470, 827, 205, 106,
                 pygame.image.load("../art/buttons/SpecialAttack.png"),
                 lambda: print("Special Attack"),
                 self.basicButtonInterrupt
             ),
             Button(
-                1680, 830, 200, 100,
+                1675, 827, 205, 106,
                 pygame.image.load("../art/buttons/Defense.png"),
                 lambda: print("Defense"),
                 self.basicButtonInterrupt
             ),
             Button(
-                1470, 940, 200, 100,
+                1470, 933, 205, 106,
                 pygame.image.load("../art/buttons/Items.png"),
                 lambda: print("Items"),
                 self.basicButtonInterrupt
             ),
             Button(
-                1680, 940, 200, 100,
+                1675, 933, 205, 106,
                 pygame.image.load("../art/buttons/Run.png"),
                 lambda: print("Run"),
                 self.basicButtonInterrupt
@@ -82,9 +83,13 @@ class Battle:
 
     def drawBattle(self,layers):
         layers[0].blit(self.background, (0, 0))
+        layers[2].blit(self.frame, (0, 0))
         self.basicButtonLayout.drawButtons(layers)
         for enemy in self.environment.enemies:
             enemy.draw(layers)
+
+        for hero in self.environment.heroes:
+            hero.draw(layers)
 
     def getBattleInput(self):
         self.basicButtonLayout.checkButtons()
@@ -99,6 +104,15 @@ class Battle:
         for enemy in self.environment.enemies:
             enemy.changePosition(x, y - enemy.size * sizeToSpace)
             x += distBetween + enemy.size * sizeToSpace
+
+    def setHeroPositions(self):
+        distBetween = 30
+        sizeToSpace = 310
+        x = 70
+        y = 1010
+        for hero in self.environment.heroes:
+            hero.changePosition(x, y - sizeToSpace)
+            x += distBetween + sizeToSpace
 
 
 

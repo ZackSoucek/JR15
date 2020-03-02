@@ -10,7 +10,7 @@ class Creature:
         self.maxHealth = health
         self.currHealth = health
         self.damageModifiers = damageModifiers
-        self.image = pygame.transform.scale(image, (self.sizeHeight * size, self.sizeHeight * size))
+        self.image = pygame.transform.scale(image, (int(self.sizeHeight * size), int(self.sizeHeight * size)))
         self.attacks = attacks
         self.position = (-1,-1)
         self.speed = speed

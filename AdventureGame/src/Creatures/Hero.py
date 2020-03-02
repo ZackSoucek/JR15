@@ -4,5 +4,7 @@ from src.Creatures.Creature import Creature
 
 class Hero(Creature):
 
-    def __init__(self, position, size, health, speed, damageModifiers, image):
-        super().__init__(position, size, health, speed, damageModifiers, image, None)
+    def __init__(self, health, speed, damageModifiers, image):
+        super().__init__(310/Creature.sizeHeight, health, speed, damageModifiers, image, None)
+
+
