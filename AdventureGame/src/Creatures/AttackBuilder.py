@@ -8,9 +8,14 @@ class Attack:
         self.animation = animation
         self.targetFunc = targetFunc
 
-    def runAttack(self, env):
-        for creature in self.targetFunc(env):
+    def runAttack(self, env, battle, animationHandler):
+        targets = list(self.targetFunc(env))
+        battle.lockdown(len(targets))
+        for creature in targets:
             creature.takeDamage(self.modifier, self.flatDamage, self.percentDamage)
+            animationHandler.addAnimation(
+                self.animation, creature.position, creature.image.get_size(), 3, lambda: battle.unlock(1)
+            )
 
 # decorators for targeting group
 def targetEnemies(func):

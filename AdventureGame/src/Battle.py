@@ -2,6 +2,7 @@ from src.UI import *
 from src.InterruptQueue import *
 from src.Creatures.Environment import *
 from src.Creatures.Creature import *
+from src.Animation import *
 import pygame
 
 
@@ -44,41 +45,44 @@ class Battle:
             Button(
                 1470, 721, 205, 106,
                 pygame.image.load("../art/buttons/BasicAttack.png"),
-                lambda: print("Basic Attack"),
+                lambda: print("Basic Attack") if self.locked != 0 else None,
                 self.basicButtonInterrupt
             ),
             Button(
                 1675, 721, 205, 106,
                 pygame.image.load("../art/buttons/UniqueAttack.png"),
-                lambda: print("Unique Attack"),
+                lambda: print("Unique Attack") if self.locked != 0 else None,
                 self.basicButtonInterrupt
             ),
             Button(
                 1470, 827, 205, 106,
                 pygame.image.load("../art/buttons/SpecialAttack.png"),
-                lambda: print("Special Attack"),
+                lambda: print("Special Attack") if self.locked != 0 else None,
                 self.basicButtonInterrupt
             ),
             Button(
                 1675, 827, 205, 106,
                 pygame.image.load("../art/buttons/Defense.png"),
-                lambda: print("Defense"),
+                lambda: print("Defense") if self.locked != 0 else None,
                 self.basicButtonInterrupt
             ),
             Button(
                 1470, 933, 205, 106,
                 pygame.image.load("../art/buttons/Items.png"),
-                lambda: print("Items"),
+                lambda: print("Items") if self.locked != 0 else None,
                 self.basicButtonInterrupt
             ),
             Button(
                 1675, 933, 205, 106,
                 pygame.image.load("../art/buttons/Run.png"),
-                lambda: print("Run"),
+                lambda: print("Run") if self.locked != 0 else None,
                 self.basicButtonInterrupt
             )
         )
         self.basicButtonLayout.activate()
+
+        self.animationHandler = AnimationHandler()
+        self.locked = 0
 
 
     def drawBattle(self,layers):
@@ -90,6 +94,8 @@ class Battle:
 
         for hero in self.environment.heroes:
             hero.draw(layers)
+
+        self.animationHandler.runAnimations(layers)
 
     def getBattleInput(self):
         self.basicButtonLayout.checkButtons()
@@ -113,6 +119,14 @@ class Battle:
         for hero in self.environment.heroes:
             hero.changePosition(x, y - sizeToSpace)
             x += distBetween + sizeToSpace
+
+    def lockdown(self, amt):
+        self.locked = amt
+
+    def unlock(self, amt):
+        self.locked -= amt
+        if self.locked < 0:
+            self.locked = 0
 
 
 
