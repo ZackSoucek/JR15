@@ -39,50 +39,50 @@ class Battle:
 
         self.background = background
 
+        self.animationHandler = AnimationHandler()
+        self.locked = 0
+
         self.basicButtonInterrupt = InterruptQueue()  # x, y, width, height, image, onClick, interruptQueue
         self.basicButtonLayout = ButtonLayout(
             self.basicButtonInterrupt,
             Button(
                 1470, 721, 205, 106,
-                pygame.image.load("../art/buttons/BasicAttack.png"),
-                lambda: print("Basic Attack") if self.locked != 0 else None,
+                pygame.image.load("../art/buttons/BasicAttack.png").convert(),
+                lambda: print("Basic Attack") if self.locked == 0 else None,
                 self.basicButtonInterrupt
             ),
             Button(
                 1675, 721, 205, 106,
-                pygame.image.load("../art/buttons/UniqueAttack.png"),
-                lambda: print("Unique Attack") if self.locked != 0 else None,
+                pygame.image.load("../art/buttons/UniqueAttack.png").convert(),
+                lambda: print("Unique Attack") if self.locked == 0 else None,
                 self.basicButtonInterrupt
             ),
             Button(
                 1470, 827, 205, 106,
-                pygame.image.load("../art/buttons/SpecialAttack.png"),
-                lambda: print("Special Attack") if self.locked != 0 else None,
+                pygame.image.load("../art/buttons/SpecialAttack.png").convert(),
+                lambda: print("Special Attack") if self.locked == 0 else None,
                 self.basicButtonInterrupt
             ),
             Button(
                 1675, 827, 205, 106,
-                pygame.image.load("../art/buttons/Defense.png"),
-                lambda: print("Defense") if self.locked != 0 else None,
+                pygame.image.load("../art/buttons/Defense.png").convert(),
+                lambda: print("Defense") if self.locked == 0 else None,
                 self.basicButtonInterrupt
             ),
             Button(
                 1470, 933, 205, 106,
-                pygame.image.load("../art/buttons/Items.png"),
-                lambda: print("Items") if self.locked != 0 else None,
+                pygame.image.load("../art/buttons/Items.png").convert(),
+                lambda: print("Items") if self.locked == 0 else None,
                 self.basicButtonInterrupt
             ),
             Button(
                 1675, 933, 205, 106,
-                pygame.image.load("../art/buttons/Run.png"),
-                lambda: print("Run") if self.locked != 0 else None,
+                pygame.image.load("../art/buttons/Run.png").convert(),
+                lambda: print("Run") if self.locked == 0 else None,
                 self.basicButtonInterrupt
             )
         )
         self.basicButtonLayout.activate()
-
-        self.animationHandler = AnimationHandler()
-        self.locked = 0
 
 
     def drawBattle(self,layers):
