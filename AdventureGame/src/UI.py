@@ -1,6 +1,5 @@
 import pygame
 
-
 class Button:
     def __init__(self, x, y, width, height, image, onClick, interruptQueue):
         self.onClick = onClick
@@ -24,4 +23,5 @@ class Button:
     def drawButton(self, layers):
         layers[2].blit(self.image,self.rect)
 
-
+def drawBar(OuterBar,InnerBar,size,offset,position,layers):
+    layers[2].blit(OuterBar, position)
