@@ -5,16 +5,16 @@ ctypes.windll.user32.SetProcessDPIAware()  # <== found it on stack overflow, it 
 
 pygame.init()
 
+size = width, height = 1920, 1080
+empty = pygame.Color(0, 0, 0, 0)
+
+screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
+
 from src.InterruptQueue import *
 from src.UI import *
 from src.Battle import *
 from src.Creatures.Creature import *
 from src.Creatures.Hero import *
-
-size = width, height = 1920, 1080
-empty = pygame.Color(0, 0, 0, 0)
-
-screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
 
 backdrop = pygame.surface.Surface((width, height),pygame.SRCALPHA)
 ui = pygame.surface.Surface((width, height),pygame.SRCALPHA)
@@ -22,8 +22,8 @@ characters = pygame.surface.Surface((width, height),pygame.SRCALPHA)
 attacks = pygame.surface.Surface((width, height),pygame.SRCALPHA)
 layers = [backdrop, characters, ui, attacks]
 
-background = pygame.transform.scale(pygame.image.load("../art/Fortress.png"), size)
-enemyImage = pygame.transform.scale(pygame.image.load(r"..\art\Slime\Slime.png"), (32, 32))
+background = pygame.transform.scale(pygame.image.load("../art/Backgrounds/desert.jpg").convert_alpha(), size)
+enemyImage = pygame.transform.scale(pygame.image.load(r"..\art\Slime\Slime.png").convert_alpha(), (32, 32))
 
 enemies = [
     Creature(1, 100, 50, dict(), enemyImage, None, "Samuel"),

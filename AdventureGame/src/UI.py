@@ -23,5 +23,6 @@ class Button:
     def drawButton(self, layers):
         layers[2].blit(self.image,self.rect)
 
-def drawBar(OuterBar,InnerBar,size,offset,position,layers):
+def drawBar(OuterBar, InnerBar, percent, innerStart, innerEnd, position, layers):
     layers[2].blit(OuterBar, position)
+    layers[2].blit(InnerBar.subsurface(pygame.Rect((innerStart + (innerEnd - innerStart) * (1 - percent), 0), (percent * (innerEnd - innerStart), InnerBar.get_height()))), (position[0] + innerStart + (innerEnd - innerStart) * (1 - percent), position[1]))

@@ -6,7 +6,7 @@ class Creature:
     sizeHeight = 240
     nameFont = pygame.font.Font('../art/Example.ttf', 36)
 
-    def __init__(self, size, health, speed, damageModifiers, image, attacks, name):
+    def __init__(self, size, health, speed, damageModifiers, image, attacks, name, nameFont = None):
         self.size = size
         self.maxHealth = health
         self.currHealth = health
@@ -15,7 +15,7 @@ class Creature:
         self.attacks = attacks
         self.position = (-1, -1)
         self.speed = speed
-        self.name = self.nameFont.render(name, True, (100, 100, 100))  # center name below
+        self.name = (nameFont if nameFont != None else self.nameFont).render(name, True, (100, 100, 100))  # center name below
         self.textPosition = (-1,-1)
 
     def takeDamage(self, modifier, amount=0, percent=0): # can also be used for healing w/ - damage

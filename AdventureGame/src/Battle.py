@@ -37,7 +37,8 @@ class Battle:
         self.setHeroPositions()
 
         self.moveQueue = []
-        self.fillMoveQueue()
+        self.currentCreature = None
+        self.getNextCharacter()
 
         self.background = background
 
@@ -48,37 +49,37 @@ class Battle:
         self.basicButtonLayout = ButtonLayout(
             self.basicButtonInterrupt,
             Button(
-                1470, 720, 200, 100,
+                1470 + 2, 720, 200, 100,
                 pygame.image.load("../art/buttons/BasicAttack.png").convert(),
                 lambda: print("Basic Attack") if self.locked == 0 else None,
                 self.basicButtonInterrupt
             ),
             Button(
-                1675, 720, 200, 100,
+                1675 + 2, 720, 200, 100,
                 pygame.image.load("../art/buttons/UniqueAttack.png").convert(),
                 lambda: print("Unique Attack") if self.locked == 0 else None,
                 self.basicButtonInterrupt
             ),
             Button(
-                1470, 830, 200, 100,
+                1470 + 2, 830, 200, 100,
                 pygame.image.load("../art/buttons/SpecialAttack.png").convert(),
                 lambda: print("Special Attack") if self.locked == 0 else None,
                 self.basicButtonInterrupt
             ),
             Button(
-                1675, 830, 200, 100,
+                1675 + 2, 830, 200, 100,
                 pygame.image.load("../art/buttons/Defense.png").convert(),
                 lambda: print("Defense") if self.locked == 0 else None,
                 self.basicButtonInterrupt
             ),
             Button(
-                1470, 940, 200, 100,
+                1470 + 2, 940, 200, 100,
                 pygame.image.load("../art/buttons/Items.png").convert(),
                 lambda: print("Items") if self.locked == 0 else None,
                 self.basicButtonInterrupt
             ),
             Button(
-                1675, 940, 200, 100,
+                1675 + 2, 940, 200, 100,
                 pygame.image.load("../art/buttons/Run.png").convert(),
                 lambda: print("Run") if self.locked == 0 else None,
                 self.basicButtonInterrupt
@@ -119,7 +120,7 @@ class Battle:
         x = 70
         y = 1010
         for hero in self.environment.heroes:
-            hero.changePosition(x + 30, y - sizeToSpace + 30)
+            hero.changePosition(x + 50, y - sizeToSpace + 65)
             x += distBetween + sizeToSpace
 
     def lockdown(self, amt):
@@ -132,6 +133,11 @@ class Battle:
 
     def fillMoveQueue(self):
         self.moveQueue = sorted(self.environment.enemies + self.environment.heroes, key=lambda c: c.speed)
+
+    def getNextCharacter(self):
+        if not self.moveQueue:
+            self.fillMoveQueue()
+        self.currentCreature = self.moveQueue.pop()
 
 
 
