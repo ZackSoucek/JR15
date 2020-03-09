@@ -1,10 +1,14 @@
 import pygame
 from random import choice
+from math import ceil
 
 class Creature:
 
     sizeHeight = 240
     nameFont = pygame.font.Font('../art/Example.ttf', 36)
+    namePlate = pygame.transform.scale(pygame.image.load('../art/Basic UI/NameplateMiddle.png'), (50, 50)).convert_alpha()
+    namePlateLeft = pygame.transform.scale(pygame.image.load('../art/Basic UI/NameplateLeft.png'), (13, 50)).convert_alpha()
+    namePlateRight = pygame.transform.scale(pygame.image.load('../art/Basic UI/NameplateRight.png'), (13, 50)).convert_alpha()
 
     def __init__(self, size, health, speed, damageModifiers, image, attacks, name, nameFont = None):
         self.size = size
@@ -15,7 +19,7 @@ class Creature:
         self.attacks = attacks
         self.position = (-1, -1)
         self.speed = speed
-        self.name = (nameFont if nameFont != None else self.nameFont).render(name, True, (100, 100, 100))  # center name below
+        self.name = (nameFont if nameFont != None else self.nameFont).render(name, True, (0, 0, 0))  # center name below
         self.textPosition = (-1,-1)
 
     def takeDamage(self, modifier, amount=0, percent=0): # can also be used for healing w/ - damage
@@ -24,7 +28,20 @@ class Creature:
 
     def draw(self, layers):
         layers[1].blit(self.image, self.position)
-        layers[2].blit(self.name,self.textPosition)
+
+        self.drawNamePlate(layers)
+        layers[2].blit(self.name,self.textPosition)  # add in text box
+
+    def drawNamePlate(self, layers):
+        fragments = ceil(self.name.get_width() / self.namePlate.get_width())
+        deltaX = -(self.namePlate.get_width() * fragments - self.name.get_width()) // 2
+        deltaY = -(self.namePlate.get_height() - self.name.get_height()) // 2
+        for i in range(fragments):
+            layers[2].blit(self.namePlate, (self.textPosition[0] + deltaX + i * self.namePlate.get_width(), self.textPosition[1] + deltaY))
+
+        layers[2].blit(self.namePlateLeft, (self.textPosition[0] + deltaX - self.namePlateLeft.get_width(), self.textPosition[1] + deltaY))
+        layers[2].blit(self.namePlateRight, (self.textPosition[0] + deltaX + self.namePlate.get_width() * fragments, self.textPosition[1] + deltaY))
+
 
     def movePosiotion(self, deltaX, deltaY):
         self.position = (self.position[0] + deltaX, self.position[1] + deltaY)
