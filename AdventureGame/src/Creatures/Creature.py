@@ -6,9 +6,9 @@ class Creature:
 
     sizeHeight = 240
     nameFont = pygame.font.Font('../art/Example.ttf', 36)
-    namePlate = pygame.transform.scale(pygame.image.load('../art/Basic UI/NameplateMiddle.png'), (50, 50)).convert_alpha()
-    namePlateLeft = pygame.transform.scale(pygame.image.load('../art/Basic UI/NameplateLeft.png'), (13, 50)).convert_alpha()
-    namePlateRight = pygame.transform.scale(pygame.image.load('../art/Basic UI/NameplateRight.png'), (13, 50)).convert_alpha()
+    namePlate = pygame.image.load('../art/Basic UI/NameplateMiddle.png').convert_alpha()
+    namePlateLeft = pygame.image.load('../art/Basic UI/NameplateLeft.png').convert_alpha()
+    namePlateRight = pygame.image.load('../art/Basic UI/NameplateRight.png').convert_alpha()
 
     def __init__(self, size, health, speed, damageModifiers, image, attacks, name, nameFont = None):
         self.size = size
@@ -19,18 +19,19 @@ class Creature:
         self.attacks = attacks
         self.position = (-1, -1)
         self.speed = speed
-        self.name = (nameFont if nameFont != None else self.nameFont).render(name, True, (0, 0, 0))  # center name below
+        self.name = (nameFont if nameFont != None else self.nameFont).render(name, True, (0, 0, 0))
+        self.selectedName = (nameFont if nameFont != None else self.nameFont).render(name, True, (207, 181, 59))
         self.textPosition = (-1,-1)
 
     def takeDamage(self, modifier, amount=0, percent=0): # can also be used for healing w/ - damage
         self.health -= amount * (1 if modifier not in self.damageModifiers else self.damageModifiers[modifier])
         self.health -= (self.health * percent) * (1 if modifier not in self.damageModifiers else self.damageModifiers[modifier])
 
-    def draw(self, layers):
+    def draw(self, layers, selected):
         layers[1].blit(self.image, self.position)
 
         self.drawNamePlate(layers)
-        layers[2].blit(self.name,self.textPosition)  # add in text box
+        layers[2].blit(self.name if not selected else self.selectedName, self.textPosition)  # add in text box
 
     def drawNamePlate(self, layers):
         fragments = ceil(self.name.get_width() / self.namePlate.get_width())

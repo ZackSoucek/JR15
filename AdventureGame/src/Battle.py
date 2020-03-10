@@ -26,13 +26,15 @@ class ButtonLayout:
             for button in self.buttons:
                 button.drawButton(layers)
 
-
 class Battle:
 
     frame = pygame.image.load("../art/UI.png")
 
+    def runIfUp(self, func):
+        return lambda: func() if self.locked == 0 and self.currentCreature in self.environment.heroesSet else None
+
     def __init__(self, enemies, heroes, background, characteristics):
-        self.environment = Environment(enemies,heroes,characteristics)
+        self.environment = Environment(enemies, heroes, characteristics)
         self.setEnemyPositions()
         self.setHeroPositions()
 
@@ -51,37 +53,37 @@ class Battle:
             Button(
                 1470 + 2, 720, 200, 100,
                 pygame.image.load("../art/buttons/BasicAttack.png").convert(),
-                lambda: print("Basic Attack") if self.locked == 0 else None,
+                self.runIfUp(lambda: (self.currentCreature.basicAttack(self.environment), self.getNextCharacter())),
                 self.basicButtonInterrupt
             ),
             Button(
                 1675 + 2, 720, 200, 100,
                 pygame.image.load("../art/buttons/UniqueAttack.png").convert(),
-                lambda: print("Unique Attack") if self.locked == 0 else None,
+                self.runIfUp(lambda: (self.currentCreature.uniqueAttack(self.environment), self.getNextCharacter())),
                 self.basicButtonInterrupt
             ),
             Button(
                 1470 + 2, 830, 200, 100,
                 pygame.image.load("../art/buttons/SpecialAttack.png").convert(),
-                lambda: print("Special Attack") if self.locked == 0 else None,
+                self.runIfUp(lambda: (self.currentCreature.specialAttack(self.environment), self.getNextCharacter())),
                 self.basicButtonInterrupt
             ),
             Button(
                 1675 + 2, 830, 200, 100,
                 pygame.image.load("../art/buttons/Defense.png").convert(),
-                lambda: print("Defense") if self.locked == 0 else None,
+                lambda: print("Defense") if self.locked == 0 and self.currentCreature in self.environment.heroesSet else None,
                 self.basicButtonInterrupt
             ),
             Button(
                 1470 + 2, 940, 200, 100,
                 pygame.image.load("../art/buttons/Items.png").convert(),
-                lambda: print("Items") if self.locked == 0 else None,
+                lambda: print("Items") if self.locked == 0 and self.currentCreature in self.environment.heroesSet else None,
                 self.basicButtonInterrupt
             ),
             Button(
                 1675 + 2, 940, 200, 100,
                 pygame.image.load("../art/buttons/Run.png").convert(),
-                lambda: print("Run") if self.locked == 0 else None,
+                lambda: print("Run") if self.locked == 0 and self.currentCreature in self.environment.heroesSet else None,
                 self.basicButtonInterrupt
             )
         )
@@ -93,10 +95,10 @@ class Battle:
         layers[2].blit(self.frame, (0, 0))
         self.basicButtonLayout.drawButtons(layers)
         for enemy in self.environment.enemies:
-            enemy.draw(layers)
+            enemy.draw(layers, enemy == self.currentCreature)
 
         for hero in self.environment.heroes:
-            hero.draw(layers)
+            hero.draw(layers, hero == self.currentCreature)
 
         self.animationHandler.runAnimations(layers)
 

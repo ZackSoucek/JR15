@@ -4,3 +4,4 @@ class Environment:
         self.enemies = enemies
         self.heroes = heroes
         self.characteristics = characteristics
+        self.heroesSet = set(heroes)

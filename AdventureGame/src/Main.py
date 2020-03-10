@@ -22,8 +22,8 @@ characters = pygame.surface.Surface((width, height),pygame.SRCALPHA)
 attacks = pygame.surface.Surface((width, height),pygame.SRCALPHA)
 layers = [backdrop, characters, ui, attacks]
 
-background = pygame.transform.scale(pygame.image.load("../art/Backgrounds/desert.jpg").convert_alpha(), size)
-enemyImage = pygame.transform.scale(pygame.image.load(r"..\art\Slime\Slime.png").convert_alpha(), (32, 32))
+background = pygame.transform.scale(pygame.image.load("../art/Backgrounds/desert.jpg"), size).convert_alpha()
+enemyImage = pygame.transform.scale(pygame.image.load(r"..\art\Slime\Slime.png"), (32, 32)).convert_alpha()
 
 enemies = [
     Creature(1, 100, 50, dict(), enemyImage, None, "Samuel"),
