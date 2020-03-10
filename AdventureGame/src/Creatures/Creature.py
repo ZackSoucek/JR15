@@ -21,9 +21,9 @@ class Creature:
         self.speed = speed
         self.name = (nameFont if nameFont != None else self.nameFont).render(name, True, (0, 0, 0))
         self.selectedName = (nameFont if nameFont != None else self.nameFont).render(name, True, (207, 181, 59))
-        self.textPosition = (-1,-1)
+        self.textPosition = (-1, -1)
 
-    def takeDamage(self, modifier, amount=0, percent=0): # can also be used for healing w/ - damage
+    def takeDamage(self, modifier, amount=0, percent=0):  # can also be used for healing w/ - damage
         self.health -= amount * (1 if modifier not in self.damageModifiers else self.damageModifiers[modifier])
         self.health -= (self.health * percent) * (1 if modifier not in self.damageModifiers else self.damageModifiers[modifier])
 
