@@ -31,7 +31,7 @@ class Battle:
     frame = pygame.image.load("../art/UI.png")
 
     def runIfUp(self, func):
-        return lambda: func() if self.locked == 0 and self.currentCreature in self.environment.heroesSet else None
+        return lambda: func() if not self.pauseAnimations and self.currentCreature in self.environment.heroesSet else None
 
     def __init__(self, enemies, heroes, background, characteristics):
         self.environment = Environment(enemies, heroes, characteristics)
@@ -44,8 +44,9 @@ class Battle:
 
         self.background = background
 
-        self.animationHandler = AnimationHandler()
-        self.locked = 0
+        self.pauseAnimations = AnimationHandler()
+
+        self.globalInterrupt = InterruptQueue()
 
         self.basicButtonInterrupt = InterruptQueue()  # x, y, width, height, image, onClick, interruptQueue
         self.basicButtonLayout = ButtonLayout(
@@ -53,37 +54,37 @@ class Battle:
             Button(
                 1470 + 2, 720, 200, 100,
                 pygame.image.load("../art/buttons/BasicAttack.png").convert(),
-                self.runIfUp(lambda: (self.currentCreature.basicAttack(self.environment), self.getNextCharacter())),
+                self.runIfUp(lambda: (self.currentCreature.basicAttack(self.environment, self.getNextCharacter))),
                 self.basicButtonInterrupt
             ),
             Button(
                 1675 + 2, 720, 200, 100,
                 pygame.image.load("../art/buttons/UniqueAttack.png").convert(),
-                self.runIfUp(lambda: (self.currentCreature.uniqueAttack(self.environment), self.getNextCharacter())),
+                self.runIfUp(lambda: (self.currentCreature.uniqueAttack(self.environment, self.getNextCharacter))),
                 self.basicButtonInterrupt
             ),
             Button(
                 1470 + 2, 830, 200, 100,
                 pygame.image.load("../art/buttons/SpecialAttack.png").convert(),
-                self.runIfUp(lambda: (self.currentCreature.specialAttack(self.environment), self.getNextCharacter())),
+                self.runIfUp(lambda: (self.currentCreature.specialAttack(self.environment, self.getNextCharacter))),
                 self.basicButtonInterrupt
             ),
             Button(
                 1675 + 2, 830, 200, 100,
                 pygame.image.load("../art/buttons/Defense.png").convert(),
-                lambda: print("Defense") if self.locked == 0 and self.currentCreature in self.environment.heroesSet else None,
+                lambda: print("Defense") if not self.pauseAnimations and self.currentCreature in self.environment.heroesSet else None,
                 self.basicButtonInterrupt
             ),
             Button(
                 1470 + 2, 940, 200, 100,
                 pygame.image.load("../art/buttons/Items.png").convert(),
-                lambda: print("Items") if self.locked == 0 and self.currentCreature in self.environment.heroesSet else None,
+                lambda: print("Items") if not self.pauseAnimations and self.currentCreature in self.environment.heroesSet else None,
                 self.basicButtonInterrupt
             ),
             Button(
                 1675 + 2, 940, 200, 100,
                 pygame.image.load("../art/buttons/Run.png").convert(),
-                lambda: print("Run") if self.locked == 0 and self.currentCreature in self.environment.heroesSet else None,
+                lambda: print("Run") if not self.pauseAnimations and self.currentCreature in self.environment.heroesSet else None,
                 self.basicButtonInterrupt
             )
         )
@@ -100,10 +101,11 @@ class Battle:
         for hero in self.environment.heroes:
             hero.draw(layers, hero == self.currentCreature)
 
-        self.animationHandler.runAnimations(layers)
+        self.pauseAnimations.runAnimations(layers)
 
     def getBattleInput(self):
         self.basicButtonLayout.checkButtons()
+        self.globalInterrupt.runInterrupts()
 
     def setEnemyPositions(self):
         totSize = sum(enemy.size for enemy in self.environment.enemies)
@@ -125,14 +127,6 @@ class Battle:
             hero.changePosition(x + 50, y - sizeToSpace + 65)
             x += distBetween + sizeToSpace
 
-    def lockdown(self, amt):
-        self.locked = amt
-
-    def unlock(self, amt):
-        self.locked -= amt
-        if self.locked < 0:
-            self.locked = 0
-
     def fillMoveQueue(self):
         self.moveQueue = sorted(self.environment.enemies + self.environment.heroes, key=lambda c: c.speed)
 
@@ -140,6 +134,8 @@ class Battle:
         if not self.moveQueue:
             self.fillMoveQueue()
         self.currentCreature = self.moveQueue.pop()
+        if self.currentCreature not in self.environment.heroesSet:
+            self.currentCreature.getAttack(self.environment).runAttack(self.environment, self.getNextCharacter, self.pauseAnimations)
 
 
 

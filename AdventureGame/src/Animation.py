@@ -53,6 +53,9 @@ class AnimationHandler:
                 onFinish()
         self.animations = nextAnimations
 
+    def __bool__(self):
+        return len(self.animations) > 0
+
 
 class SpriteSheet:
     def __init__(self, imagePath, rows, cols, width, height):

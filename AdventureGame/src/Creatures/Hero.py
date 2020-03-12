@@ -22,7 +22,7 @@ class Hero(Creature):
 
     def draw(self, layers, selected):
         super().draw(layers, selected)
-        drawBar(self.healthbar, self.healthbarBar, self.currHealth / self.maxHealth, 54,202, (self.position[0], self.position[1] + self.size * self.sizeHeight + 5), layers)
+        drawBar(self.healthbar, self.healthbarBar, self.currHealth / self.maxHealth, 54, 202, (self.position[0], self.position[1] + self.size * self.sizeHeight + 5), layers)
         damage = self.numberFont.render(str(self.currHealth), False, (0, 0, 0))
         layers[2].blit(damage, (self.position[0] + 20 - damage.get_width()//2, self.position[1] + self.size * self.sizeHeight + 5 + (self.healthbar.get_height() - self.numberFont.get_height()) // 2 + 1))
 
@@ -30,11 +30,26 @@ class Hero(Creature):
         self.position = (x, y)
         self.textPosition = (x + (self.size*self.sizeHeight - self.name.get_width()) // 2, y - self.name.get_height())
 
-    def basicAttack(self, env):
+    def basicAttack(self, env, interruptQueue, animationHandler, advance):
         print("basic attack")
+        advance()
 
-    def uniqueAttack(self, env):
+    def uniqueAttack(self, env, interruptQueue, animationHandler, advance):
         print("unique attack")
+        advance()
 
-    def specialAttack(self, env):
+    def specialAttack(self, env, interruptQueue, animationHandler, advance):
         print("special attack")
+        advance()
+
+
+def targetGroup(env, interruptQueue, animationHandler, advance, group, attack):
+    def interruptFunc(mousePos, mouseClicked):
+        if mouseClicked[0]:
+            for creature in group:
+                if pygame.Rect(creature.position, (creature.size * creature.sizeHeight, creature.size * creature.sizeHeight)).collidepoint(*mousePos):
+                    attack.runAttack(env, advance, animationHandler, [creature])
+                    break
+            interruptQueue.removeInterrupt(interruptFunc, "mouse_pos", "mouse_clicked")
+
+    interruptQueue.addInterrupt()

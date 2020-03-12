@@ -8,13 +8,12 @@ class Attack:
         self.animation = animation
         self.targetFunc = targetFunc
 
-    def runAttack(self, env, battle, animationHandler):
-        targets = list(self.targetFunc(env))
-        battle.lockdown(len(targets))
+    def runAttack(self, env, advance, animationHandler, group=None):
+        targets = list(self.targetFunc(env)) if group is None else group
         for creature in targets:
             creature.takeDamage(self.modifier, self.flatDamage, self.percentDamage)
             animationHandler.addAnimation(
-                self.animation, creature.position, creature.image.get_size(), 3, lambda: battle.unlock(1)
+                self.animation, creature.position, creature.image.get_size(), 3, advance
             )
 
 # decorators for targeting group
